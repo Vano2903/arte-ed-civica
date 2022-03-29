@@ -5,29 +5,28 @@ create table if not exists `artshows`(
     `image` varchar(255) not null,
     `artistID` int(11) not null,
     primary key(`id`)
-) engine=InnoDB default charset=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `artshows` VALUES
+INSERT INTO `artshows` (`name`, `description`, `image`, `artistID`) VALUES 
     ('florealia','composizioni floreali','http://www.avant-gardeart.com/perrini/florealia/images/ff1_16t.jpg',1),
     ('antologica 1','tante cose belle del buon signor luigi pevini','http://www.avant-gardeart.com/perrini/antologica/images/vers2000.jpg',1),
     ('demoni','I Demoni dedicata a Fiodor Dostoevskij','http://www.avant-gardeart.com/perrini/demoni/images/vitelliu.jpg',1),
     ('antologica 2','non so cosa dire','http://www.avant-gardeart.com/perrini/antologica2/images/11_gif.jpg',1),
     ('icone 2005','opere religiose','http://www.avant-gardeart.com/perrini/icone2005/images/01_JPG.JPG',1);
 
-create table if not exists `artpiece`(
+create table if not exists `artpieces`(
     `id` int(11) not null auto_increment,
     `idArtShow` int(11) not null,
     `idArtist` int(11) not null,
     `title` varchar(255) not null,
     `year` varchar(15) not null,
     `dimensions` varchar(255) not null,
-    `description` text not null,
     `technics` text not null,
     `image` text not null,
     primary key(`id`)
-) engine=InnoDB default charset=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO output VALUES
+INSERT INTO `artpieces` (`idArtShow`, `idArtist`, `title`, `year`,`dimensions`, `technics`, `image`) VALUES
     (1,1,'Fantasia floreale 1/16T','2000','25 x 35 cm.','olio e tempera su tela/oil and watercolour on canvas','http://www.avant-gardeart.com/perrini/florealia/images/ff1_16t.jpg'),
     (1,1,'Fantasia floreale 10/16C','2000','30 x 40 cm. ca.','olio e tempera su carta/oil and watercolour on paper','http://www.avant-gardeart.com/perrini/florealia/images/ff10_16c.jpg'),
     (1,1,'Fantasia floreale 10/24T','1999','40 x 60 cm.','acrilico e tempera su tela/acrilic and watercolour on canvas','http://www.avant-gardeart.com/perrini/florealia/images/ff10_24t.jpg'),
