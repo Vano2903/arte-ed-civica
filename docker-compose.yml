@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+    db:
+      image: mariadb:10.2
+      restart: always
+      environment:
+        MYSQL_DATABASE: arte
+        MYSQL_ROOT_PASSWORD: root
+      ports:
+        - "3306:3306"
+      volumes:
+        - ./db.sql:/docker-entrypoint-initdb.d/tables.sql
+        - ./db-dump:/var/lib/mysql
+      command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+      # exec:
+      #     - mysql -uroot -proot -e"source /docker-entrypoint-initdb.d/tables.sql"
+      networks:
+        - "ed-civica"
+volumes:
+  mariadb:
+
+networks:
+  ed-civica:
