@@ -1,3 +1,14 @@
+create table if not exists `likes` (
+    `idArtShow` int(11) not null,
+    `idArtPiece` int(11) not null,
+    `idUser` int(11) not null,
+)
+
+create table if not exists `users` (
+    `idUser` int(11) not null,
+    `username` varchar(255) not null,
+)
+
 create table if not exists `artshows`(
     `id` int(11) not null auto_increment,
     `name` varchar(255) not null,
@@ -13,6 +24,7 @@ INSERT INTO `artshows` (`name`, `description`, `image`, `artistID`) VALUES
     ('demoni','I Demoni dedicata a Fiodor Dostoevskij','http://www.avant-gardeart.com/perrini/demoni/images/vitelliu.jpg',1),
     ('antologica 2','non so cosa dire','http://www.avant-gardeart.com/perrini/antologica2/images/11_gif.jpg',1),
     ('icone 2005','opere religiose','http://www.avant-gardeart.com/perrini/icone2005/images/01_JPG.JPG',1);
+
 
 create table if not exists `artpieces`(
     `id` int(11) not null auto_increment,
@@ -292,3 +304,7 @@ INSERT INTO `artpieces` (`idArtShow`, `idArtist`, `title`, `year`,`dimensions`, 
     (6,1,'Piazza del Popolo Cosmica','2004','48 x 66 cm.','smalto e olio su carta/varnish and oil on paper','http://www.avant-gardeart.com/perrini/piazzapopolo/images/13_JPG.JPG'),
     (6,1,'Piazza del Popolo in Arcobaleno','2005','50 x 70 cm.','smalto, olio e gouache su tela/varnish, oil and gouache on canvas','http://www.avant-gardeart.com/perrini/piazzapopolo/images/14_JPG.JPG'),
     (6,1,'Piazza del Popolo in Diamantato','2005','50 x 70 cm.','tecnica mista su tela/mixed technique on canvas','http://www.avant-gardeart.com/perrini/piazzapopolo/images/15_JPG.JPG');
+
+
+
+

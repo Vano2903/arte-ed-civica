@@ -1,0 +1,102 @@
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"log"
+// 	"net/http"
+
+// 	"github.com/gorilla/websocket"
+// )
+
+// var upgrader = websocket.Upgrader{
+// 	//size of the incoming buffer
+// 	ReadBufferSize: 1024,
+// 	//size of the transfer buffer
+// 	WriteBufferSize: 1024,
+// 	//should check the origin of the request, for now we return true
+// 	CheckOrigin: func(r *http.Request) bool { return true },
+// }
+
+// //this function listen to incoming connections and upgrade them to websocket
+// func Upgrade(w http.ResponseWriter, r *http.Request) (*websocket.Conn, error) {
+// 	ws, err := upgrader.Upgrade(w, r, nil)
+// 	if err != nil {
+// 		log.Println(err)
+// 		return ws, err
+// 	}
+// 	return ws, nil
+// }
+
+// //read from the websocket and print the message
+// func Reader(conn *websocket.Conn) {
+// 	//while true
+// 	for {
+// 		//get the message type and buffer of it
+// 		messageType, p, err := conn.ReadMessage()
+// 		if err != nil {
+// 			log.Println(err)
+// 			return
+// 		}
+
+// 		fmt.Printf("new message received, type: %d, message: %s\n", messageType, p)
+// 		//write the message to the other clients connected via websocket
+// 		if err := conn.WriteMessage(messageType, p); err != nil {
+// 			log.Println(err)
+// 			return
+// 		}
+// 	}
+// }
+
+// //write to the websockets (broadcast)
+// func Writer(conn *websocket.Conn) {
+// 	//while true
+// 	for {
+// 		fmt.Println("Sending")
+// 		//create a new reader
+// 		//(in short a io.Reader is a type that can read from a stream of bytes)
+// 		//it has one method: Read(p []byte) (n int, err error)
+// 		//which allows us to read a slice (array) of bytes
+// 		messageType, r, err := conn.NextReader()
+// 		if err != nil {
+// 			fmt.Println(err)
+// 			return
+// 		}
+// 		//NextWriter returns a io.WriteCloser given the messageType (of the websocket)
+// 		//that writes to the next message in the stream.
+// 		w, err := conn.NextWriter(messageType)
+// 		if err != nil {
+// 			fmt.Println(err)
+// 			return
+// 		}
+// 		if _, err := io.Copy(w, r); err != nil {
+// 			fmt.Println(err)
+// 			return
+// 		}
+// 		if err := w.Close(); err != nil {
+// 			fmt.Println(err)
+// 			return
+// 		}
+// 	}
+// }
+
+// func serveWs(w http.ResponseWriter, r *http.Request) {
+// 	//upgrage the connection to websocket
+// 	ws, err := Upgrade(w, r)
+// 	if err != nil {
+// 		fmt.Fprintf(w, "%+V\n", err)
+// 	}
+
+// 	go Writer(ws)
+// 	Reader(ws)
+// }
+
+// func setupRoutes() {
+// 	http.HandleFunc("/ws", serveWs)
+// }
+
+// func main() {
+// 	fmt.Println("Distributed Chat App v0.01")
+// 	setupRoutes()
+// 	http.ListenAndServe(":8080", nil)
+// }
