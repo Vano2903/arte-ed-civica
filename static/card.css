@@ -1,0 +1,25 @@
+.card {
+  margin: 10px;
+  overflow: hidden;
+}
+
+.card-body {
+  display: flex;
+}
+
+.card-body button {
+  height: 40px;
+  width: 40px;
+  vertical-align: middle;
+  margin-right: 5px;
+  border-radius: 50%;
+}
+
+a,
+a:hover,
+a:focus,
+a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
