@@ -1,6 +1,16 @@
 version: "3.9"
 
 services:
+    go:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      links:
+        - db
+      ports:
+        - "8080:8080"
+      networks:
+        - "ed-civica"
     db:
       image: mariadb:10.2
       restart: always
@@ -13,8 +23,6 @@ services:
         - ./db.sql:/docker-entrypoint-initdb.d/tables.sql
         - ./db-dump:/var/lib/mysql
       command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
-      # exec:
-      #     - mysql -uroot -proot -e"source /docker-entrypoint-initdb.d/tables.sql"
       networks:
         - "ed-civica"
 volumes:
