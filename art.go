@@ -149,14 +149,10 @@ func GetArtShows(connection *sql.DB, getPieces bool) ([]ArtShow, error) {
 //create a new user in the database and return the id of the user
 func generateNewUser(connection *sql.DB) (int, error) {
 	//insert into users
-	insertUserQuery := `insert into users (username) values ("ciao")`
-	results, err := connection.Exec(insertUserQuery)
-	if err != nil {
-		return 0, err
-	}
+	lastInsertId := 0
+	err := connection.QueryRow("INSERT INTO users (username) VALUES($1) RETURNING iduser", "ciao").Scan(&lastInsertId)
 	//get the id of the user
-	id, err := results.LastInsertId()
-	return int(id), err
+	return lastInsertId, err
 }
 
 func userHasLiked(connection *sql.DB, userID, artShowID, artPieceID int) (bool, error) {
