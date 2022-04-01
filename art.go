@@ -50,7 +50,7 @@ func (a *ArtShow) AddClient(client *Client) {
 }
 
 func (a *ArtShow) AddLike(connection *sql.DB, userID, pieceID int) error {
-	insertLikeQuery := `INSERT INTO likes (idArtShow, idArtPiece, idUser) VALUES (?, ?, ?)`
+	insertLikeQuery := `INSERT INTO likes (idArtShow, idArtPiece, idUser) VALUES ($1, $2, $3)`
 	_, err := connection.Exec(insertLikeQuery, a.ID, pieceID, userID)
 	if err != nil {
 		return err
@@ -65,7 +65,7 @@ func (a *ArtShow) AddLike(connection *sql.DB, userID, pieceID int) error {
 }
 
 func (a *ArtShow) RemoveLike(connection *sql.DB, userID, pieceID int) error {
-	deleteLikeQuery := `DELETE FROM likes WHERE idArtShow = ? AND idArtPiece = ? AND idUser = ?`
+	deleteLikeQuery := `DELETE FROM likes WHERE (idArtShow = $1 AND idArtPiece = $2 AND idUser = $3)`
 	_, err := connection.Exec(deleteLikeQuery, a.ID, pieceID, userID)
 	if err != nil {
 		return err
@@ -157,7 +157,7 @@ func generateNewUser(connection *sql.DB) (int, error) {
 
 func userHasLiked(connection *sql.DB, userID, artShowID, artPieceID int) (bool, error) {
 	var hasLiked bool
-	getLikeQuery := `SELECT COUNT(*) FROM likes WHERE idUser = ? AND idArtShow = ? AND idArtPiece = ?`
+	getLikeQuery := `SELECT COUNT(*) FROM likes WHERE (idArtShow = $1 AND idArtPiece = $2 AND idUser = $3)`
 	err := connection.QueryRow(getLikeQuery, userID, artShowID, artPieceID).Scan(&hasLiked)
 	if err != nil {
 		return false, err
