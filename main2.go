@@ -1,8 +1,11 @@
 package main
 
 import (
+	"log"
 	"net/http"
+	"os"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -23,5 +26,10 @@ func main() {
 	socket := r.PathPrefix("/socket").Subrouter()
 	socket.HandleFunc("/connect/{id}", handler.ConnectUserToRealTimeUpdates).Methods("GET")
 
-	http.ListenAndServe(":8080", r)
+	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With"})
+	originsOk := handlers.AllowedOrigins([]string{"*"})
+	methodsOk := handlers.AllowedMethods([]string{"GET", "POST"})
+	log.Println("starting on", ":"+os.Getenv("PORT"))
+	log.Fatal(http.ListenAndServe(":8080", handlers.CORS(originsOk, headersOk, methodsOk)(r)))
+	// +os.Getenv("PORT")
 }

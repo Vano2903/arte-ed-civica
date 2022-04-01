@@ -1,55 +1,61 @@
-create table if not exists `likes` (
-    `idArtShow` int(11) not null,
-    `idArtPiece` int(11) not null,
-    `idUser` int(11) not null
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS likes;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS artshows;
+DROP TABLE IF EXISTS artists;
+DROP TABLE IF EXISTS artpieces;
 
-create table if not exists `users` (
-    `idUser` int(11) not null auto_increment,
-    `username` varchar(255) not null,
-    primary key(`idUser`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create table if not exists "likes" (
+    "idartshow" smallint not null,
+    "idartpiece" smallint not null,
+    "iduser" smallint not null
+);-- ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-create table if not exists `artshows`(
-    `id` int(11) not null auto_increment,
-    `name` varchar(255) not null,
-    `description` text not null,
-    `image` varchar(255) not null,
-    `artistID` int(11) not null,
-    primary key(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create table if not exists "users" (
+    "iduser" serial not null PRIMARY KEY,
+    "username" varchar(255) not null
+    -- primary key("idUser")
+);-- ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-create table if not exists `artists` (
-    `id` int(11) not null auto_increment,
-    `name` varchar(255) not null,
-    `description` text not null,
-    `image` varchar(255) not null,
-    primary key(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create table if not exists "artshows"(
+    "id" serial not null PRIMARY KEY,
+    "name" varchar(255) not null,
+    "description" text not null,
+    "image" varchar(255) not null,
+    "artistid" smallint not null
+    -- primary key("id")
+);-- ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-create table if not exists `artpieces`(
-    `id` int(11) not null auto_increment,
-    `idArtShow` int(11) not null,
-    `idArtist` int(11) not null,
-    `title` varchar(255) not null,
-    `year` varchar(15) not null,
-    `dimensions` varchar(255) not null,
-    `technics` text not null,
-    `image` text not null,
-    primary key(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create table if not exists "artists" (
+    "id" serial not null PRIMARY KEY,
+    "name" varchar(255) not null,
+    "description" text not null,
+    "image" varchar(255) not null
+    -- primary key("id")
+);-- ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `artists` (`name`, `description`, `image`) VALUES
-    ('Luigi Francesco Perrini', 'Nato a Bari nel 1954 é laureato in elettrotecnica e, ora, vive a Roma. Ha allestito 25 opere e prodotto circa 1000 opere.', 'http://www.avant-gardeart.com/perrini/demoni/images/canepazz.jpg');
+create table if not exists "artpieces"(
+    "id" serial not null PRIMARY KEY,
+    "idartshow" smallint not null,
+    "idartist" smallint not null,
+    "title" varchar(255) not null,
+    "year" varchar(15) not null,
+    "dimensions" varchar(255) not null,
+    "technics" text not null,
+    "image" text not null
+    -- primary key("id")
+);-- ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `artshows` (`name`, `description`, `image`, `artistID`) VALUES 
+INSERT INTO artists (name, description, image) 
+VALUES('Luigi Francesco Perrini', 'Nato a Bari nel 1954 é laureato in elettrotecnica e, ora, vive a Roma. Ha allestito 25 opere e prodotto circa 1000 opere.', 'http://www.avant-gardeart.com/perrini/demoni/images/canepazz.jpg');
+
+INSERT INTO artshows (name, description, image, artistid) VALUES 
     ('florealia','composizioni floreali','http://www.avant-gardeart.com/perrini/florealia/images/ff1_16t.jpg',1),
     ('antologica 1','tante cose belle del buon signor luigi pevini','http://www.avant-gardeart.com/perrini/antologica/images/vers2000.jpg',1),
     ('demoni','I Demoni dedicata a Fiodor Dostoevskij','http://www.avant-gardeart.com/perrini/demoni/images/vitelliu.jpg',1),
     ('antologica 2','non so cosa dire','http://www.avant-gardeart.com/perrini/antologica2/images/11_gif.jpg',1),
     ('icone 2005','opere religiose','http://www.avant-gardeart.com/perrini/icone2005/images/01_JPG.JPG',1);
 
-INSERT INTO `artpieces` (`idArtShow`, `idArtist`, `title`, `year`,`dimensions`, `technics`, `image`) VALUES
+INSERT INTO artpieces (idartshow, idartist, title, year,dimensions, technics, image) VALUES
     (1,1,'Fantasia floreale 1/16T','2000','25 x 35 cm.','olio e tempera su tela/oil and watercolour on canvas','http://www.avant-gardeart.com/perrini/florealia/images/ff1_16t.jpg'),
     (1,1,'Fantasia floreale 10/16C','2000','30 x 40 cm. ca.','olio e tempera su carta/oil and watercolour on paper','http://www.avant-gardeart.com/perrini/florealia/images/ff10_16c.jpg'),
     (1,1,'Fantasia floreale 10/24T','1999','40 x 60 cm.','acrilico e tempera su tela/acrilic and watercolour on canvas','http://www.avant-gardeart.com/perrini/florealia/images/ff10_24t.jpg'),

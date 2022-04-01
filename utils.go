@@ -2,10 +2,13 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
+	"io/ioutil"
 	"log"
+	"os"
 
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 )
 
 var (
@@ -13,7 +16,9 @@ var (
 )
 
 func connectToDB() (db *sql.DB, err error) {
-	return sql.Open("mysql", "root:root@tcp(localhost:3306)/arte?parseTime=true&charset=utf8mb4")
+	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s "+"password=%s dbname=%s", os.Getenv("dbHostName"), os.Getenv("dbPort"), os.Getenv("dbUser"), os.Getenv("dbPass"), os.Getenv("dbName"))
+	return sql.Open("postgres", psqlInfo)
+	//fmt.Sprintf("root:root@tcp(localhost:3306)/arte?parseTime=true&charset=utf8mb4")
 }
 
 // func removeFromSlice[T comparable](slice []T, i T) []T {
@@ -43,5 +48,19 @@ func init() {
 		log.Println("Error loading .env file")
 	}
 
+	conn, err := connectToDB()
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	sqlIni, err := ioutil.ReadFile("db.sql")
+	if err != nil {
+		log.Fatalln("error getting the db.sql file")
+	}
+
+	_, err = conn.Exec(string(sqlIni))
+	if err != nil {
+		log.Fatalln(err)
+	}
 	handler = NewHandler()
 }
